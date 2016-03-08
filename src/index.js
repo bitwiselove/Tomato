@@ -72,7 +72,7 @@ class CountdownTimer extends React.Component {
       this.setState({
         completed: true
       }, () => {
-        document.title = 'Tomatos!';
+        document.title = '‼️ Tomatos!';
       });
     }
   }
