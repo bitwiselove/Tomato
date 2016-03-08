@@ -12,6 +12,12 @@ const FormatedTimestamp = ({
   return <span>{`${format(minutes)}:${format(seconds)}`}</span>
 };
 
+const StartButton = ({
+  onClick
+}) => (
+  <button onClick={onClick}>Start Timer</button>
+);
+
 const PlayPauseButton = ({
   ticking,
   onPlay,
@@ -28,12 +34,14 @@ class CountdownTimer extends React.Component {
     super(props);
     this.pause = this.pause.bind(this);
     this.resume = this.resume.bind(this);
+    this.reset = this.reset.bind(this);
     this.tick = this.tick.bind(this);
     this.state = {
       timeRemaining: props.initialTimeInMs,
       previousTime: null,
-      timeoutId: null,
+      timeout: null,
       ticking: false,
+      completed: false
     }
   }
 
@@ -65,8 +73,21 @@ class CountdownTimer extends React.Component {
     });
 
     if (countdownComplete) {
+      this.props.onComplete()
       clearTimeout(this.state.timeout);
+      this.setState({completed: true});
     }
+  }
+
+  reset() {
+    clearTimeout(this.state.timeout);
+    this.setState({
+      timeRemaining: this.props.initialTimeInMs,
+      previousTime: null,
+      timeout: null,
+      ticking: false,
+      completed: false
+    })
   }
 
   resume() {
@@ -81,28 +102,51 @@ class CountdownTimer extends React.Component {
   }
 
   render() {
+    if (this.state.completed) {
+      var ControlButton = <button onClick={this.reset}>Reset Timer</button>;
+    } else {
+      var ControlButton = this.state.previousTime === null ? <StartButton onClick={this.resume} /> : <PlayPauseButton
+        ticking={this.state.ticking}
+        onPlay={this.resume}
+        onPause={this.pause}
+      />;
+    }
+
     return (
       <div>
+        {' '}
         <FormatedTimestamp milliseconds={this.state.timeRemaining} />
         {' '}
-        <PlayPauseButton
-          ticking={this.state.ticking}
-          onPlay={this.resume}
-          onPause={this.pause}
-        />
+        {ControlButton}
       </div>
     );
   }
 }
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onComplete = this.onComplete.bind(this);
+    this.state = {
+      tomatos: 0
+    }
+  }
+
+  onComplete() {
+    this.setState({
+      tomatos: this.state.tomatos + 1
+    });
+  }
+
   render() {
     return (
       <div>
         <h1>Tomato</h1>
         <CountdownTimer
-          initialTimeInMs={1500000}
+          initialTimeInMs={5000}
+          onComplete={this.onComplete}
         />
+        <p>{this.state.tomatos}</p>
       </div>
     );
   }
