@@ -4,7 +4,8 @@
 
 ## Building
 
-Clone this repository, `npm install`, run `webpack`, and open `index.html`.
+Clone this repository, `npm install`, run `webpack`, and open `index.html`. Or
+[preview here](http://forkbombs.com/tomatos).
 
 ```
 $ git clone https://github.com/bitwiselove/Tomato.git
