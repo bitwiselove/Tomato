@@ -1,33 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const FormatedTimestamp = ({
-  milliseconds
-}) => {
-  const totalSeconds = Math.round(milliseconds / 1000);
-  const seconds = parseInt(totalSeconds % 60, 10);
-  const minutes = parseInt(totalSeconds / 60, 10);
-  const format = time => time < 10 ? '0' + time : time;
-
-  return <span className="countdown">{`${format(minutes)}:${format(seconds)}`}</span>
-};
-
-const StartButton = ({
-  onClick
-}) => (
-  <button className="button button--primary" onClick={onClick}>Start Timer</button>
-);
-
-const PlayPauseButton = ({
-  ticking,
-  onPlay,
-  onPause
-}) => {
-  let action = ticking ? onPause : onPlay;
-  let label = ticking ? 'Pause Timer' : 'Resume Timer';
-
-  return <button className="button button--primary" onClick={action}>{label}</button>;
-}
+import FormattedTimestamp from './components/FormattedTimestamp';
+import StartButton from './components/StartButton';
+import PlayPauseButton from './components/PlayPauseButton';
 
 class CountdownTimer extends React.Component {
   constructor(props) {
@@ -53,6 +29,10 @@ class CountdownTimer extends React.Component {
   }
 
   tick() {
+    /**
+     * This code is largely taken from:
+     * https://github.com/uken/react-countdown-timer
+     */
     var currentTime = Date.now();
     var dt = this.state.previousTime ? (currentTime - this.state.previousTime) : 0;
     var interval = 1000;
@@ -138,7 +118,7 @@ class CountdownTimer extends React.Component {
     return (
       <div>
         <div className="text-center">
-          <FormatedTimestamp milliseconds={this.state.timeRemaining} />
+          <FormattedTimestamp milliseconds={this.state.timeRemaining} />
         </div>
         <div className="text-center">
           {ControlButton}
