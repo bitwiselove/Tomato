@@ -1,6 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+const FormatedTimestamp = ({
+  milliseconds
+}) => {
+  const totalSeconds = Math.round(milliseconds / 1000);
+  const seconds = parseInt(totalSeconds % 60, 10);
+  const minutes = parseInt(totalSeconds / 60, 10);
+  const format = time => time < 10 ? '0' + time : time;
+
+  return <span>{`${format(minutes)}:${format(seconds)}`}</span>
+};
+
+const PlayPauseButton = ({
+  ticking,
+  onPlay,
+  onPause
+}) => {
+  let action = ticking ? onPause : onPlay;
+  let label = ticking ? 'Pause Timer' : 'Resume Timer';
+
+  return <button onClick={action}>{label}</button>;
+}
+
 class CountdownTimer extends React.Component {
   constructor(props) {
     super(props);
@@ -8,14 +30,11 @@ class CountdownTimer extends React.Component {
     this.resume = this.resume.bind(this);
     this.tick = this.tick.bind(this);
     this.state = {
-      timeRemaining: 1500000,
+      timeRemaining: props.initialTimeInMs,
       previousTime: null,
       timeoutId: null,
+      ticking: false,
     }
-  }
-
-  componentDidMount() {
-    this.tick();
   }
 
   componentWillUnmount() {
@@ -41,7 +60,8 @@ class CountdownTimer extends React.Component {
     this.setState({
       timeout: countdownComplete ? null : setTimeout(this.tick, timeout),
       previousTime: currentTime,
-      timeRemaining: timeRemaining
+      timeRemaining: timeRemaining,
+      ticking: true
     });
 
     if (countdownComplete) {
@@ -50,8 +70,6 @@ class CountdownTimer extends React.Component {
   }
 
   resume() {
-    console.log('Time elapsed between pausing and resuming:');
-    console.log(this.formatTime(Date.now() - this.state.previousTime))
     this.setState({
       previousTime: Date.now()
     }, this.tick);
@@ -59,23 +77,19 @@ class CountdownTimer extends React.Component {
 
   pause() {
     clearTimeout(this.state.timeout);
-  }
-
-  formatTime(milliseconds) {
-    const totalSeconds = Math.round(milliseconds / 1000);
-    const seconds = parseInt(totalSeconds % 60, 10);
-    const minutes = parseInt(totalSeconds / 60, 10);
-    const format = time => time < 10 ? '0' + time : time;
-
-    return `${format(minutes)}:${format(seconds)}`;
+    this.setState({ ticking: false });
   }
 
   render() {
     return (
       <div>
-        <p>{this.formatTime(this.state.timeRemaining)}</p>
-        <button onClick={this.pause}>Pause</button>
-        <button onClick={this.resume}>Resume</button>
+        <FormatedTimestamp milliseconds={this.state.timeRemaining} />
+        {' '}
+        <PlayPauseButton
+          ticking={this.state.ticking}
+          onPlay={this.resume}
+          onPause={this.pause}
+        />
       </div>
     );
   }
@@ -86,7 +100,9 @@ class App extends React.Component {
     return (
       <div>
         <h1>Tomato</h1>
-        <CountdownTimer />
+        <CountdownTimer
+          initialTimeInMs={1500000}
+        />
       </div>
     );
   }
