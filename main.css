@@ -1,0 +1,95 @@
+* { box-sizing: border-box; }
+
+body {
+  background: #ffeeff;
+  font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+}
+
+h1 {
+  margin: 0;
+  color: tomato;
+  text-align: center;
+}
+
+.button {
+  display: block;
+  margin-bottom: 1em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+  width: 50%;
+  border: 0;
+  border-radius: 7px;
+  background-color: #dedede;
+}
+.button--primary {
+  background-color: tomato;
+  color: white;
+}
+.button--primary:focus,
+.button--primary:hover {
+  background-color: #D65741;
+}
+.button--cool {
+  background-color: #08A0F9;
+  color: white;
+}
+.button--cool:focus,
+.button--cool:hover {
+  background-color: #0F86CC;
+}
+
+.container {
+  max-width: 38em;
+  margin-top: 2em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2em;
+  border-radius: 7px;
+  background-color: white;
+}
+
+.credits {
+  max-width: 38rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 0;
+  color: #B7ABAB;
+  font-size: .8em;
+}
+.credits a {
+  color: #656AB7;
+  text-decoration: none;
+}
+.credits a:focus,
+.credits a:hover {
+  color: #393C73;
+  text-decoration: underline;
+}
+
+.countdown {
+  color: tomato;
+  font-size: 6em;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.completed-text {
+  margin-right: .5em;
+  color: #bcbcbc;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.icon-small {
+  width: 1.5em;
+  margin-right: .3em;
+}
+
+.flex-vertical {
+  margin-top: 2em;
+  display: flex;
+  align-items: center;
+}
