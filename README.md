@@ -1,10 +1,11 @@
 # Tomatos
 
-Tomatos is a lightweight Pomodoro timer application written with React.js.
+[Tomatos](http://forkbombs.com/tomatos/) is a lightweight Pomodoro timer application written with React.js.
 
 ## Building
 
-Clone this repository, `npm install`, run `webpack`, and open `index.html`.
+Clone this repository, `npm install`, run `webpack`, and open `index.html`. Or
+[preview the application here](http://forkbombs.com/tomatos/).
 
 ```
 $ git clone https://github.com/bitwiselove/Tomato.git
