@@ -1,9 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import FormattedTimestamp from './components/FormattedTimestamp';
 import StartButton from './components/StartButton';
 import PlayPauseButton from './components/PlayPauseButton';
+
+function formatTime(milliseconds) {
+  const totalSeconds = Math.round(milliseconds / 1000);
+  const seconds = parseInt(totalSeconds % 60, 10);
+  const minutes = parseInt(totalSeconds / 60, 10);
+  const format = time => time < 10 ? '0' + time : time;
+
+  return `${format(minutes)}:${format(seconds)}`;
+}
 
 class CountdownTimer extends React.Component {
   constructor(props) {
@@ -52,6 +60,8 @@ class CountdownTimer extends React.Component {
       previousTime: currentTime,
       timeRemaining: timeRemaining,
       ticking: true
+    }, () => {
+      document.title = `🍅 ${formatTime(this.state.timeRemaining)}`;
     });
 
     if (countdownComplete) {
@@ -59,7 +69,11 @@ class CountdownTimer extends React.Component {
         this.props.onComplete()
 
       clearTimeout(this.state.timeout);
-      this.setState({completed: true});
+      this.setState({
+        completed: true
+      }, () => {
+        document.title = 'Tomatos!';
+      });
     }
   }
 
@@ -118,7 +132,10 @@ class CountdownTimer extends React.Component {
     return (
       <div>
         <div className="text-center">
-          <FormattedTimestamp milliseconds={this.state.timeRemaining} />
+          <FormattedTimestamp
+            milliseconds={this.state.timeRemaining}
+            format={formatTime}
+          />
         </div>
         <div className="text-center">
           {ControlButton}
