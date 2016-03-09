@@ -7,7 +7,7 @@ import TomatoPresenter from './components/TomatoPresenter';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.tomatoTime = 1000 * 60 * 25;
+    this.tomatoTime = 1000 * 60;
     this.smallBreak = 1000 * 60 * 5;
     this.largeBreak = 1000 * 60 * 25;
     this.onComplete = this.onComplete.bind(this);
@@ -38,7 +38,7 @@ class App extends React.Component {
     return (
       <div>
         <div className="container">
-          <h1><img src="http://emojipedia-us.s3.amazonaws.com/cache/89/dd/89dd52458d0d4c147b56bfa316ce5fe2.png"/></h1>
+          <h1><img src="tomato.png"/></h1>
           <CountdownTimer
             initialTimeInMs={this.tomatoTime}
             breakLength={this.state.breakLength}
