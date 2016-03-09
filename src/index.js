@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CountdownTimer from './components/CountdownTimer';
+import TomatoPresenter from './components/TomatoPresenter';
 
 function formatTime(milliseconds) {
   const totalSeconds = Math.round(milliseconds / 1000);
@@ -59,9 +60,7 @@ class App extends React.Component {
             onComplete={this.onComplete}
             timeFormatter={formatTime}
           />
-          <div className="flex-vertical">
-            <span className="completed-text">Tomatos completed:</span> {tomatos}
-          </div>
+          <TomatoPresenter numTomatos={this.state.totalTomatos} />
         </div>
         <p className="credits">Created by <a href="http://forkbombs.com" target="_blank">Brandon Newton</a>.</p>
       </div>
