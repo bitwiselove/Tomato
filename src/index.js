@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { CountdownTimer } from './components/CountdownTimer';
+import CountdownTimer from './components/CountdownTimer';
 
 function formatTime(milliseconds) {
   const totalSeconds = Math.round(milliseconds / 1000);

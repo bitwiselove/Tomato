@@ -1,50 +1,10 @@
 import React from 'react';
+import countdown from '../lib/countdown';
 import FormattedTimestamp from '../components/FormattedTimestamp';
 import StartButton from '../components/StartButton';
 import PlayPauseButton from '../components/PlayPauseButton';
 
-const interval = 1000;
-const deltaTime = (previousTime, currentTime) => previousTime ? (currentTime - previousTime) : 0;
-const countdown = (
-  previousTime,
-  timeRemaining,
-  takingBreak,
-  onComplete,
-  tick,
-  timeFormatter
-) => {
-  const currentTime = Date.now();
-  const delta = deltaTime(previousTime, currentTime);
-  const timeRemainingInInterval = (interval - (delta % interval));
-  const newTimeRemaining = Math.max(timeRemaining - delta, 0);
-  const countdownComplete = (previousTime && timeRemaining <= 0);
-
-  if (countdownComplete && !takingBreak) {
-    onComplete();
-    document.title = '!! Tomatos!';
-    return {
-      timeout: null,
-      completed: true,
-    };
-  } else {
-    let timeout = timeRemainingInInterval;
-
-    if (timeRemainingInInterval < (interval / 2.0)) {
-      timeout += interval;
-    }
-
-    timeout += (timeout < (interval / 2.0)) ? interval : 0;
-    document.title = timeFormatter(newTimeRemaining);
-    return {
-      timeout: countdownComplete ? null : setTimeout(tick, timeout),
-      previousTime: currentTime,
-      timeRemaining: newTimeRemaining,
-      ticking: true
-    }
-  }
-}
-
-export class CountdownTimer extends React.Component {
+export default class CountdownTimer extends React.Component {
   constructor(props) {
     super(props);
     this.pause = this.pause.bind(this);
