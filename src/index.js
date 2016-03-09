@@ -7,7 +7,7 @@ import TomatoPresenter from './components/TomatoPresenter';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.tomatoTime = 1000 * 60;
+    this.tomatoTime = 1000 * 60 * 25;
     this.smallBreak = 1000 * 60 * 5;
     this.largeBreak = 1000 * 60 * 25;
     this.onComplete = this.onComplete.bind(this);
