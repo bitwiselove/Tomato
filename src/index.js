@@ -43,13 +43,6 @@ class App extends React.Component {
   }
 
   render() {
-    var tomatos = [];
-    for (var i = 0; i < this.state.totalTomatos; i++) {
-      tomatos.push(<img src="http://emojipedia-us.s3.amazonaws.com/cache/89/dd/89dd52458d0d4c147b56bfa316ce5fe2.png" className="icon-small" />);
-    }
-    tomatos = tomatos.length > 0 ? tomatos : <img src="http://emojipedia-us.s3.amazonaws.com/cache/2c/e1/2ce12e2adad77ef4248afab9c094f08e.png" className="icon-small" />
-
-
     return (
       <div>
         <div className="container">
