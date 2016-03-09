@@ -13,6 +13,48 @@ function formatTime(milliseconds) {
   return `${format(minutes)}:${format(seconds)}`;
 }
 
+const interval = 1000;
+const deltaTime = (previousTime, currentTime) => previousTime ? (currentTime - previousTime) : 0;
+
+const countdown = (
+  previousTime,
+  timeRemaining,
+  takingBreak,
+  onComplete,
+  tick,
+  timeFormatter
+) => {
+  const currentTime = Date.now();
+  const delta = deltaTime(previousTime, currentTime);
+  const timeRemainingInInterval = (interval - (delta % interval));
+  const newTimeRemaining = Math.max(timeRemaining - delta, 0);
+  const countdownComplete = (previousTime && timeRemaining <= 0);
+
+  if (countdownComplete && !takingBreak) {
+    onComplete();
+    document.title = '!! Tomatos!';
+    return {
+      timeout: null,
+      completed: true,
+    };
+  } else {
+    let timeout = timeRemainingInInterval;
+
+    if (timeRemainingInInterval < (interval / 2.0)) {
+      timeout += interval;
+    }
+
+    timeout += (timeout < (interval / 2.0)) ? interval : 0;
+    document.title = timeFormatter(newTimeRemaining);
+    return {
+      timeout: countdownComplete ? null : setTimeout(tick, timeout),
+      previousTime: currentTime,
+      timeRemaining: newTimeRemaining,
+      ticking: true
+    }
+  }
+}
+
 class CountdownTimer extends React.Component {
   constructor(props) {
     super(props);
@@ -37,44 +79,14 @@ class CountdownTimer extends React.Component {
   }
 
   tick() {
-    /**
-     * This code is largely taken from:
-     * https://github.com/uken/react-countdown-timer
-     */
-    var currentTime = Date.now();
-    var dt = this.state.previousTime ? (currentTime - this.state.previousTime) : 0;
-    var interval = 1000;
-
-    var timeRemainingInInterval = (interval - (dt % interval));
-    var timeout = timeRemainingInInterval;
-
-    if (timeRemainingInInterval < (interval / 2.0)) {
-      timeout += interval;
-    }
-
-    var timeRemaining = Math.max(this.state.timeRemaining - dt, 0);
-    var countdownComplete = (this.state.previousTime && timeRemaining <= 0);
-
-    this.setState({
-      timeout: countdownComplete ? null : setTimeout(this.tick, timeout),
-      previousTime: currentTime,
-      timeRemaining: timeRemaining,
-      ticking: true
-    }, () => {
-      document.title = `🍅 ${formatTime(this.state.timeRemaining)}`;
-    });
-
-    if (countdownComplete) {
-      if (!this.state.takingBreak)
-        this.props.onComplete()
-
-      clearTimeout(this.state.timeout);
-      this.setState({
-        completed: true
-      }, () => {
-        document.title = '‼️ Tomatos!';
-      });
-    }
+    this.setState(countdown(
+      this.state.previousTime,
+      this.state.timeRemaining,
+      this.state.takingBreak,
+      this.props.onComplete,
+      this.tick,
+      this.props.timeFormatter
+    ));
   }
 
   reset() {
@@ -134,7 +146,7 @@ class CountdownTimer extends React.Component {
         <div className="text-center">
           <FormattedTimestamp
             milliseconds={this.state.timeRemaining}
-            format={formatTime}
+            format={this.props.timeFormatter}
           />
         </div>
         <div className="text-center">
@@ -192,6 +204,7 @@ class App extends React.Component {
             initialTimeInMs={this.tomatoTime}
             breakLength={this.state.breakLength}
             onComplete={this.onComplete}
+            timeFormatter={formatTime}
           />
           <div className="flex-vertical">
             <span className="completed-text">Tomatos completed:</span> {tomatos}
